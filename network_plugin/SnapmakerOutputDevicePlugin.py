@@ -107,6 +107,8 @@ class SnapmakerOutputDevicePlugin(OutputDevicePlugin):
         if self._active_machine and model != self._active_machine['model']:
             return
 
+        self.__updateGroupName(name)
+
         device = self.getOutputDeviceManager().getOutputDevice(device_id)
         if not device:
             Logger.info("Discovered %s printer: %s@%s",
@@ -129,6 +131,20 @@ class SnapmakerOutputDevicePlugin(OutputDevicePlugin):
                 # Snapmaker 2.0 Dual Extruder
                 device = Snapmaker2OutputDevice(device_id, address, properties)
                 self.getOutputDeviceManager().addOutputDevice(device)
+
+    def __updateGroupName(self, name: str) -> None:
+        """Store discovered printer name as group name of active machine.
+
+        Cura sets "is_online" on the active machine when an output device changes
+        its connection state, which makes the machine listed under
+        "Network enabled printers", using "group_name" as its label.
+        """
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return
+
+        if global_stack.getMetaDataEntry("group_name") != name:
+            global_stack.setMetaDataEntry("group_name", name)
 
     def start(self) -> None:
         if not is_machine_discover_supported(self._active_machine_name):
