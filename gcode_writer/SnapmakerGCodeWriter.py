@@ -58,7 +58,7 @@ class SnapmakerGCodeWriter(MeshWriter):
 
         Copied from GCodeWriter, do little modifications.
 
-        Extra keyword arguments (e.g. `mime_type` passed by Cura 5.13+) are accepted and ignored.
+        Extra keyword arguments (e.g. `mime_type` passed by Cura 5.11+) are accepted and ignored.
         """
 
         if mode != MeshWriter.OutputMode.TextMode:
