@@ -53,10 +53,12 @@ class SnapmakerGCodeWriter(MeshWriter):
 
         self._header_version = machine.get('header_version', 1) if machine else -1
 
-    def write(self, stream, node, mode=FileWriter.OutputMode.BinaryMode) -> None:
+    def write(self, stream, node, mode=FileWriter.OutputMode.BinaryMode, **kwargs) -> None:
         """Writes the G-code for the entire scene to a stream.
 
         Copied from GCodeWriter, do little modifications.
+
+        Extra keyword arguments (e.g. `mime_type` passed by Cura 5.13+) are accepted and ignored.
         """
 
         if mode != MeshWriter.OutputMode.TextMode:
